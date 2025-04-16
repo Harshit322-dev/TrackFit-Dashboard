@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar - FitTrack</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .calendar-container {
+            padding: 20px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .calendar-nav button {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #1a73e8;
+        }
+
+        .current-month {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #202124;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-weight: 500;
+            color: #5f6368;
+            padding: 10px;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .calendar-day:hover {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .day-number {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .day-events {
+            font-size: 0.8rem;
+            color: #5f6368;
+        }
+
+        .event-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 4px;
+        }
+
+        .event-dot.workout {
+            background-color: #1a73e8;
+        }
+
+        .event-dot.running {
+            background-color: #34a853;
+        }
+
+        .event-dot.rest {
+            background-color: #fbbc05;
+        }
+
+        .calendar-day.today {
+            border: 2px solid #1a73e8;
+        }
+
+        .calendar-day.has-events {
+            background-color: #f8f9fa;
+        }
+
+        .workout-summary {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .workout-summary h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #202124;
+        }
+
+        .workout-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .workout-stat {
+            text-align: center;
+        }
+
+        .workout-stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1a73e8;
+        }
+
+        .workout-stat-label {
+            font-size: 0.9rem;
+            color: #5f6368;
+        }
+
+        .upcoming-workouts {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .upcoming-workouts h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #202124;
+        }
+
+        .workout-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .workout-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #dadce0;
+        }
+
+        .workout-item:last-child {
+            border-bottom: none;
+        }
+
+        .workout-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+        }
+
+        .workout-icon.running {
+            background-color: #34a853;
+        }
+
+        .workout-icon.cycling {
+            background-color: #1a73e8;
+        }
+
+        .workout-icon.swimming {
+            background-color: #fbbc05;
+        }
+
+        .workout-icon.strength {
+            background-color: #ea4335;
+        }
+
+        .workout-details {
+            flex-grow: 1;
+        }
+
+        .workout-name {
+            font-weight: 500;
+            color: #202124;
+            margin-bottom: 5px;
+        }
+
+        .workout-time {
+            font-size: 0.9rem;
+            color: #5f6368;
+        }
+
+        .add-workout-btn {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+
+        .add-workout-btn:hover {
+            background-color: #1557b0;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-dumbbell"></i>
+                <span class="logo-text">FitTrack</span>
+            </div>
+            <button id="sidebar-toggle" class="sidebar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <nav>
+            <ul>
+                <li>
+                    <a href="dashboard.html">
+                        <i class="fas fa-home"></i>
+                        <span class="nav-text">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="exercise.html">
+                        <i class="fas fa-running"></i>
+                        <span class="nav-text">Exercise</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="runtracker.html">
+                        <i class="fas fa-route"></i>
+                        <span class="nav-text">Run Tracker</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="calendar.html">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span class="nav-text">Calendar</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="fitness-goals.html">
+                        <i class="fas fa-bullseye"></i>
+                        <span class="nav-text">Fitness Goals</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="account.html">
+                        <i class="fas fa-user"></i>
+                        <span class="nav-text">Account</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="settings.html">
+                        <i class="fas fa-cog"></i>
+                        <span class="nav-text">Settings</span>
+                    </a>
+                </li>
+                <li class="logout">
+                    <a href="#logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span class="nav-text">Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <header>
+                <h1>Calendar</h1>
+                <div class="date-display">
+                    <span id="current-date"></span>
+                </div>
+            </header>
+
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <div class="calendar-nav">
+                        <button id="prev-month"><i class="fas fa-chevron-left"></i></button>
+                        <span class="current-month" id="current-month">March 2024</span>
+                        <button id="next-month"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <button class="add-workout-btn">
+                        <i class="fas fa-plus"></i>
+                        Add Workout
+                    </button>
+                </div>
+
+                <div class="calendar-grid">
+                    <div class="calendar-day-header">Sun</div>
+                    <div class="calendar-day-header">Mon</div>
+                    <div class="calendar-day-header">Tue</div>
+                    <div class="calendar-day-header">Wed</div>
+                    <div class="calendar-day-header">Thu</div>
+                    <div class="calendar-day-header">Fri</div>
+                    <div class="calendar-day-header">Sat</div>
+                    <!-- Calendar days will be populated by JavaScript -->
+                </div>
+
+                <div class="workout-summary">
+                    <h3>Monthly Summary</h3>
+                    <div class="workout-stats">
+                        <div class="workout-stat">
+                            <div class="workout-stat-value">12</div>
+                            <div class="workout-stat-label">Workouts</div>
+                        </div>
+                        <div class="workout-stat">
+                            <div class="workout-stat-value">8.5</div>
+                            <div class="workout-stat-label">Hours</div>
+                        </div>
+                        <div class="workout-stat">
+                            <div class="workout-stat-value">4,200</div>
+                            <div class="workout-stat-label">Calories</div>
+                        </div>
+                        <div class="workout-stat">
+                            <div class="workout-stat-value">45</div>
+                            <div class="workout-stat-label">km</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="upcoming-workouts">
+                    <h3>Upcoming Workouts</h3>
+                    <ul class="workout-list">
+                        <li class="workout-item">
+                            <div class="workout-icon running">
+                                <i class="fas fa-running"></i>
+                            </div>
+                            <div class="workout-details">
+                                <div class="workout-name">Morning Run</div>
+                                <div class="workout-time">Tomorrow, 7:00 AM</div>
+                            </div>
+                        </li>
+                        <li class="workout-item">
+                            <div class="workout-icon strength">
+                                <i class="fas fa-dumbbell"></i>
+                            </div>
+                            <div class="workout-details">
+                                <div class="workout-name">Upper Body Strength</div>
+                                <div class="workout-time">Wednesday, 6:00 PM</div>
+                            </div>
+                        </li>
+                        <li class="workout-item">
+                            <div class="workout-icon cycling">
+                                <i class="fas fa-bicycle"></i>
+                            </div>
+                            <div class="workout-details">
+                                <div class="workout-name">Cycling Class</div>
+                                <div class="workout-time">Friday, 5:30 PM</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="calendar.js"></script>
+</body>
+</html> 

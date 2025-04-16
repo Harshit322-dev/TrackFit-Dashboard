@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Tracker Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-dumbbell"></i>
+                <span class="logo-text">FitTrack</span>
+            </div>
+            <button id="sidebar-toggle" class="sidebar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <nav>
+            <ul>
+                <li class="active">
+                    <button onclick="window.location.href='dashboard.html'" class="nav-button">
+                        <i class="fas fa-home"></i>
+                        <span class="nav-text">Dashboard</span>
+                    </button>
+                </li>
+                <li>
+                    <button onclick="window.location.href='exercise.html'" class="nav-button">
+                        <i class="fas fa-running"></i>
+                        <span class="nav-text">Exercise</span>
+                    </button>
+                </li>
+                <li>
+                    <a href="runtracker.html">
+                        <i class="fas fa-route"></i>
+                        <span class="nav-text">Run Tracker</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="calendar.html">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span class="nav-text">Calendar</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="fitness-goals.html">
+                        <i class="fas fa-bullseye"></i>
+                        <span class="nav-text">Fitness Goals</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="account.html">
+                        <i class="fas fa-user"></i>
+                        <span class="nav-text">Account</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="settings.html">
+                        <i class="fas fa-cog"></i>
+                        <span class="nav-text">Settings</span>
+                    </a>
+                </li>
+                <li class="logout">
+                    <a href="#logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span class="nav-text">Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <header>
+                <h1>Fitness Tracker</h1>
+                <div class="date-display">
+                    <span id="current-date"></span>
+                </div>
+            </header>
+
+            <div class="dashboard">
+                <div class="card steps-card">
+                    <h2>Steps</h2>
+                    <div class="progress-circle">
+                        <div class="progress-circle-inner">
+                            <span id="steps-count">0</span>
+                            <span class="label">steps</span>
+                        </div>
+                    </div>
+                    <div class="goal-info">
+                        <p>Daily Goal: <span id="steps-goal">10000</span> steps</p>
+                        <button onclick="updateSteps()">Add Steps</button>
+                    </div>
+                </div>
+
+                <div class="card calories-card">
+                    <h2>Calories</h2>
+                    <div class="progress-circle">
+                        <div class="progress-circle-inner">
+                            <span id="calories-count">0</span>
+                            <span class="label">kcal</span>
+                        </div>
+                    </div>
+                    <div class="goal-info">
+                        <p>Daily Goal: <span id="calories-goal">2000</span> kcal</p>
+                        <button onclick="updateCalories()">Add Calories</button>
+                    </div>
+                </div>
+
+                <div class="card goals-card">
+                    <h2>Goals</h2>
+                    <div class="goals-list">
+                        <div class="goal-item">
+                            <input type="text" id="new-goal" placeholder="Enter new goal">
+                            <button onclick="addGoal()">Add Goal</button>
+                        </div>
+                        <ul id="goals-list"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 

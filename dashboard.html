@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Dashboard - Detailed History</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-dumbbell"></i>
+                <span class="logo-text">FitTrack</span>
+            </div>
+            <button id="sidebar-toggle" class="sidebar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <nav>
+            <ul>
+                <li class="active">
+                    <a href="dashboard.html">
+                        <i class="fas fa-home"></i>
+                        <span class="nav-text">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="exercise.html">
+                        <i class="fas fa-running"></i>
+                        <span class="nav-text">Exercise</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="runtracker.html">
+                        <i class="fas fa-route"></i>
+                        <span class="nav-text">Run Tracker</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="calendar.html">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span class="nav-text">Calendar</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="fitness-goals.html">
+                        <i class="fas fa-bullseye"></i>
+                        <span class="nav-text">Fitness Goals</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="account.html">
+                        <i class="fas fa-user"></i>
+                        <span class="nav-text">Account</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="settings.html">
+                        <i class="fas fa-cog"></i>
+                        <span class="nav-text">Settings</span>
+                    </a>
+                </li>
+                <li class="logout">
+                    <a href="#logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span class="nav-text">Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <header>
+                <h1>Fitness Dashboard</h1>
+                <div class="date-display">
+                    <span id="current-date"></span>
+                </div>
+            </header>
+
+            <div class="dashboard-summary">
+                <div class="summary-card">
+                    <i class="fas fa-fire"></i>
+                    <div class="summary-info">
+                        <h3>Calories Burned</h3>
+                        <p class="calories-value">2,450</p>
+                        <span class="trend positive">+12% from last week</span>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <i class="fas fa-route"></i>
+                    <div class="summary-info">
+                        <h3>Distance</h3>
+                        <p class="distance-value">34.2 km</p>
+                        <span class="trend positive">+8% from last week</span>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <i class="fas fa-heartbeat"></i>
+                    <div class="summary-info">
+                        <h3>Heart Rate</h3>
+                        <p class="heart-rate-value">72 bpm</p>
+                        <span class="trend negative">-5% from last week</span>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <div class="summary-info">
+                        <h3>Blood Pressure</h3>
+                        <p class="blood-pressure-value">120/80</p>
+                        <span class="trend neutral">Same as last week</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-charts">
+                <div class="chart-container">
+                    <h3>Weekly Activity</h3>
+                    <canvas id="activityChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Exercise Distribution</h3>
+                    <canvas id="exerciseChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Heart Rate Zones</h3>
+                    <canvas id="heartRateChart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3>Sleep Quality</h3>
+                    <canvas id="sleepChart"></canvas>
+                </div>
+            </div>
+
+            <div class="dashboard-history">
+                <div class="history-header">
+                    <h3>Activity History</h3>
+                    <div class="history-filters">
+                        <select id="dateFilter">
+                            <option value="7">Last 7 days</option>
+                            <option value="30">Last 30 days</option>
+                            <option value="90">Last 90 days</option>
+                        </select>
+                        <select id="typeFilter">
+                            <option value="all">All Activities</option>
+                            <option value="running">Running</option>
+                            <option value="cycling">Cycling</option>
+                            <option value="swimming">Swimming</option>
+                        </select>
+                    </div>
+                </div>
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Activity</th>
+                            <th>Duration</th>
+                            <th>Calories</th>
+                            <th>Distance</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyTableBody">
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="dashboard.js"></script>
+</body>
+</html> 
